@@ -8,14 +8,18 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"strings"
 
 	"checkVersionJetBrains/src/domain"
 )
 
 func main() {
+	fmt.Println("")
+	fmt.Println(strings.Repeat("-", 55))
 	releaseData := getReleaseData()
 	installedProducts := getLocalVersions(domain.GetInstalledProducts())
 	checkVersions(releaseData, installedProducts)
+	fmt.Println(strings.Repeat("-", 55))
 }
 
 func checkVersions(releaseData domain.Products, installedProducts domain.InstalledProducts) {
@@ -44,7 +48,9 @@ func checkVersions(releaseData domain.Products, installedProducts domain.Install
 			}
 		}
 		if latestProduct.Version != installedProduct.Version {
-			fmt.Println("Version mismatch for", installedProduct.Name, ":", installedProduct.Version, " - ", latestProduct.Version)
+			fmt.Printf("%s, installed version %s mismatch latest %s\n", installedProduct.Name, installedProduct.Version, latestProduct.Version)
+		} else {
+			fmt.Printf("%s: latest version %s installed\n", installedProduct.Name, installedProduct.Version)
 		}
 	}
 }
