@@ -1,7 +1,7 @@
 package domain
 
 const BasePath = "/usr/local"
-
+const CheckUrl = "https://www.jetbrains.com/updates/updates.xml"
 type (
 	LatestProduct struct {
 		Name string

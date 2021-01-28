@@ -48,15 +48,15 @@ func checkVersions(releaseData domain.Products, installedProducts domain.Install
 			}
 		}
 		if latestProduct.Version != installedProduct.Version {
-			fmt.Printf("%s, installed version %s mismatch latest %s\n", installedProduct.Name, installedProduct.Version, latestProduct.Version)
+			fmt.Printf("%10s, installed version %s mismatch latest %s\n", installedProduct.Name, installedProduct.Version, latestProduct.Version)
 		} else {
-			fmt.Printf("%s: latest version %s installed\n", installedProduct.Name, installedProduct.Version)
+			fmt.Printf("%10s: latest version %s installed\n", installedProduct.Name, installedProduct.Version)
 		}
 	}
 }
 
 func getReleaseData() domain.Products {
-	res, err := http.Get("https://www.jetbrains.com/updates/updates.xml")
+	res, err := http.Get(domain.CheckUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
