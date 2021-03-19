@@ -2,11 +2,13 @@ package domain
 
 const BasePath = "/usr/local"
 const CheckUrl = "https://www.jetbrains.com/updates/updates.xml"
+
 type (
 	LatestProduct struct {
-		Name string
+		Name        string
 		ReleaseDate int
-		Version string
+		Version     string
+		Url         string
 	}
 	InstalledProducts []InstalledProduct
 
@@ -14,7 +16,8 @@ type (
 		Name    string
 		File    string
 		Version string
-}
+		Url     string
+	}
 
 	Products struct {
 		Products []Product `xml:"product"`
@@ -24,22 +27,24 @@ type (
 		Channels []Channel `xml:"channel"`
 	}
 	Channel struct {
-		Status string `xml:"status,attr"`
-		Build  []Build  `xml:"build"`
+		Status string  `xml:"status,attr"`
+		Url    string  `xml:"url,attr"`
+		Build  []Build `xml:"build"`
 	}
 	Build struct {
 		//Number      string `xml:"number,attr"`
 		Version     string `xml:"version,attr"`
-		ReleaseDate int `xml:"releaseDate,attr"`
+		ReleaseDate int    `xml:"releaseDate,attr"`
 	}
 )
 
 func GetInstalledProducts() InstalledProducts {
 	return InstalledProducts{
 		struct {
-			Name string
-			File string
+			Name    string
+			File    string
 			Version string
+			Url     string
 		}{
 			Name: "GoLand",
 			File: "Go/GoLand/product-info.json",
