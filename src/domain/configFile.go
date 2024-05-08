@@ -1,6 +1,6 @@
 package domain
 
-const BasePath = "/usr/local"
+const BasePath = "/home/sklaski/bin"
 const CheckUrl = "https://www.jetbrains.com/updates/updates.xml"
 
 type (
@@ -32,7 +32,6 @@ type (
 		Build  []Build `xml:"build"`
 	}
 	Build struct {
-		//Number      string `xml:"number,attr"`
 		Version     string `xml:"version,attr"`
 		ReleaseDate int    `xml:"releaseDate,attr"`
 	}
@@ -51,7 +50,7 @@ func GetInstalledProducts() InstalledProducts {
 		},
 		{
 			Name: "WebStorm",
-			File: "Javascript/WebStorm/product-info.json",
+			File: "WebStorm/WebStorm/product-info.json",
 		},
 	}
 

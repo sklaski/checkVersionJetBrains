@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -49,9 +50,9 @@ func checkVersions(releaseData domain.Products, installedProducts domain.Install
 			}
 		}
 		if latestProduct.Version != installedProduct.Version {
-			fmt.Printf("%10s, installed version %s mismatch latest %s\nURL: %s\n", installedProduct.Name, installedProduct.Version, latestProduct.Version, latestProduct.Url)
+			fmt.Printf("* %10s, installed version %s mismatch latest %s\nURL: %s\n", installedProduct.Name, installedProduct.Version, latestProduct.Version, latestProduct.Url)
 		} else {
-			fmt.Printf("%10s: latest version %s installed\n", installedProduct.Name, installedProduct.Version)
+			fmt.Printf("* %10s: latest version %s installed\n", installedProduct.Name, installedProduct.Version)
 		}
 	}
 }
@@ -63,7 +64,7 @@ func getReleaseData() domain.Products {
 	}
 	defer res.Body.Close()
 
-	data, err := ioutil.ReadAll(res.Body)
+	data, err := io.ReadAll(res.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -78,7 +79,7 @@ func getReleaseData() domain.Products {
 func getLocalVersions(products domain.InstalledProducts) domain.InstalledProducts {
 	var installedWithVersion domain.InstalledProducts
 	for _, product := range products {
-		data, err := ioutil.ReadFile(filepath.Join(domain.BasePath, product.File))
+		data, err := os.ReadFile(filepath.Join(domain.BasePath, product.File))
 		if err != nil {
 			log.Fatal(err)
 		}
