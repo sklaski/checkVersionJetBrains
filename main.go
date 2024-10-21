@@ -91,6 +91,9 @@ func getLocalVersions(configFile string) domain.LocalProducts {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if config.ProductConfigs == nil {
+		log.Fatalf("no product configs found in %s", configFile)
+	}
 	basePath := application.FullQualifiedPath(config.BasePath)
 	for _, product := range config.ProductConfigs {
 		data, err := os.ReadFile(filepath.Join(basePath, product.Path, "product-info.json"))
