@@ -1,6 +1,5 @@
 package domain
 
-const BasePath = "/home/sklaski/bin"
 const CheckUrl = "https://www.jetbrains.com/updates/updates.xml"
 
 type (
@@ -10,13 +9,12 @@ type (
 		Version     string
 		Url         string
 	}
-	InstalledProducts []InstalledProduct
 
-	InstalledProduct struct {
+	LocalProducts []LocalProduct
+
+	LocalProduct struct {
 		Name    string
-		File    string
 		Version string
-		Url     string
 	}
 
 	Products struct {
@@ -36,22 +34,3 @@ type (
 		ReleaseDate int    `xml:"releaseDate,attr"`
 	}
 )
-
-func GetInstalledProducts() InstalledProducts {
-	return InstalledProducts{
-		struct {
-			Name    string
-			File    string
-			Version string
-			Url     string
-		}{
-			Name: "GoLand",
-			File: "Go/GoLand/product-info.json",
-		},
-		{
-			Name: "WebStorm",
-			File: "WebStorm/WebStorm/product-info.json",
-		},
-	}
-
-}

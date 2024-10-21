@@ -11,19 +11,23 @@ import (
 	"path/filepath"
 	"strings"
 
+	"gopkg.in/yaml.v2"
+
+	"checkVersionJetBrains/src/application"
 	"checkVersionJetBrains/src/domain"
 )
 
 func main() {
+	configFile := application.CheckParam(os.Args)
 	fmt.Println("")
 	fmt.Println(strings.Repeat("-", 75))
+	installedProducts := getLocalVersions(configFile)
 	releaseData := getReleaseData()
-	installedProducts := getLocalVersions(domain.GetInstalledProducts())
 	checkVersions(releaseData, installedProducts)
 	fmt.Println(strings.Repeat("-", 75))
 }
 
-func checkVersions(releaseData domain.Products, installedProducts domain.InstalledProducts) {
+func checkVersions(releaseData domain.Products, installedProducts domain.LocalProducts) {
 	for _, installedProduct := range installedProducts {
 		var latestProduct domain.LatestProduct
 		for _, product := range releaseData.Products {
@@ -76,10 +80,20 @@ func getReleaseData() domain.Products {
 	return releaseData
 }
 
-func getLocalVersions(products domain.InstalledProducts) domain.InstalledProducts {
-	var installedWithVersion domain.InstalledProducts
-	for _, product := range products {
-		data, err := os.ReadFile(filepath.Join(domain.BasePath, product.File))
+func getLocalVersions(configFile string) domain.LocalProducts {
+	var installedWithVersion domain.LocalProducts
+	data, err := os.ReadFile(configFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	config := domain.ConfigFile{}
+	err = yaml.Unmarshal(data, &config)
+	if err != nil {
+		log.Fatal(err)
+	}
+	basePath := application.FullQualifiedPath(config.BasePath)
+	for _, product := range config.ProductConfigs {
+		data, err := os.ReadFile(filepath.Join(basePath, product.Path, "product-info.json"))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -90,9 +104,8 @@ func getLocalVersions(products domain.InstalledProducts) domain.InstalledProduct
 		if err != nil {
 			log.Fatal(err)
 		}
-		installedWithVersion = append(installedWithVersion, domain.InstalledProduct{
+		installedWithVersion = append(installedWithVersion, domain.LocalProduct{
 			Name:    product.Name,
-			File:    product.File,
 			Version: version.Version,
 		})
 	}
