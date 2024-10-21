@@ -8,13 +8,13 @@ var DefaultPaths = []string{
 
 type (
 	ConfigFile struct {
-		BasePath       string         `yaml:"BasePath"`
-		ProductConfigs ProductConfigs `yaml:"Products"`
+		BasePath       string         `yaml:"basePath"`
+		ProductConfigs ProductConfigs `yaml:"products"`
 	}
 
 	ProductConfigs []ProductConfig
 	ProductConfig  struct {
-		Name string `yaml:"Name"`
-		Path string `yaml:"Path"`
+		Name string `yaml:"name"`
+		Path string `yaml:"path"`
 	}
 )

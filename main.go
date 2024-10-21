@@ -87,7 +87,7 @@ func getLocalVersions(configFile string) domain.LocalProducts {
 		log.Fatal(err)
 	}
 	config := domain.ConfigFile{}
-	err = yaml.Unmarshal(data, &config)
+	err = yaml.Unmarshal(data, &config) //nolint:typecheck
 	if err != nil {
 		log.Fatal(err)
 	}
