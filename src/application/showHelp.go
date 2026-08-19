@@ -3,6 +3,8 @@ package application
 import (
 	"log"
 	"strings"
+
+	"checkVersionJetBrains/src/domain"
 )
 
 func ShowHelp() {
@@ -16,4 +18,9 @@ func ShowHelp() {
 	log.Println("    path: bin/Go/GoLand")
 	log.Println("  - name: WebStorm")
 	log.Println("    path: bin/WebStorm/WebStorm")
+	log.Println("------------------")
+	log.Println("DefaultPaths:")
+	for _, path := range domain.DefaultPaths {
+		log.Println(path)
+	}
 }
