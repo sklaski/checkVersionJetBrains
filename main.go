@@ -53,6 +53,9 @@ func checkVersions(releaseData domain.Products, installedProducts domain.LocalPr
 
 			}
 		}
+		if latestProduct.Url == "" {
+			latestProduct.Url = "N/A"
+		}
 		if latestProduct.Version != installedProduct.Version {
 			fmt.Printf("* %10s, installed version %s mismatch latest %s\nURL: %s\n", installedProduct.Name, installedProduct.Version, latestProduct.Version, latestProduct.Url)
 		} else {
